@@ -12,6 +12,9 @@
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>
 
+    <color name="primary_color">#16447F</color>
+    <color name="input_background">#edf1f5</color>
+
     <color name="widget_overview_light_background">#fff</color>
     <color name="widget_overview_positive">#09470C</color>
     <color name="widget_overview_negative">#cc0000</color>

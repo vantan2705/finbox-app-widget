@@ -1,0 +1,19 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutTickerDetailWidget"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/transparent">
+    <TextView
+        android:id="@+id/widget_txtInputTicker"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/search_ticker_input_widget"
+        android:textColor="@color/white"
+        android:textSize="@dimen/widget_overview_text_size"
+        android:gravity="center_vertical"
+        android:textColorHint="@color/light_blue_200"
+        android:drawableRight="@drawable/icon_search"
+        android:hint="Nhập mã cần tìm">
+    </TextView>
+</LinearLayout>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@color/white">
+    <EditText
+        android:id="@+id/editTicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableRight="@drawable/icon_search"
+        android:background="@drawable/search_ticker_input"
+        android:hint="Nhập mã cần tìm"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textSize="@dimen/normal_text_size"
+        android:inputType="text"
+        android:imeOptions="actionSearch">
+    </EditText>
+</LinearLayout>

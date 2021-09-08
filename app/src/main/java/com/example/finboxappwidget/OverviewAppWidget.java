@@ -23,11 +23,6 @@ import java.util.HashMap;
 public class OverviewAppWidget extends AppWidgetProvider {
     static final int chartColumnWidth = 160;
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
-
-    }
-
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         final int N = appWidgetIds.length;
