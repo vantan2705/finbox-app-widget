@@ -3,12 +3,14 @@ package com.example.finboxappwidget;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -50,18 +52,33 @@ public class OverviewAppWidget extends AppWidgetProvider {
                             String ratio = chartBaseJSON.getString("ratio");
                             String note = chartBaseJSON.getString("note");
 
-                            for (int i = 0; i<N; i++) {
-                                RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.overview_app_widget);
-                                views.setTextViewText(R.id.txtNote, note);
-                                views.setTextViewText(R.id.appwidget_txtIncrease, strong);
-                                views.setTextViewText(R.id.appwidget_txtNormal, weak);
-                                views.setTextViewText(R.id.appwidget_txtDecrease, ratio);
-                                views.setTextViewText(R.id.txtStrongLabel, strong);
-                                views.setTextViewText(R.id.txtWeakLabel, weak);
-                                views.setTextViewText(R.id.txtWeak, getChart(Integer.parseInt(weak)));
-                                views.setTextViewText(R.id.txtStrong, getChart(Integer.parseInt(strong)));
-                                appWidgetManager.updateAppWidget(appWidgetIds[i], views);
-                            }
+                            ImageLoader imageLoader = MySingleton.getInstance(context).getImageLoader();
+                            imageLoader.get("https://img.nhandan.com.vn/Files/Images/2020/07/26/giai_thuong_lon-1595747403778.jpg", new ImageLoader.ImageListener() {
+                                @Override
+                                public void onResponse(ImageLoader.ImageContainer imageResponse, boolean isImmediate) {
+
+                                    if(imageResponse != null && imageResponse.getBitmap() != null){
+                                        for (int i = 0; i<N; i++) {
+                                            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.overview_app_widget);
+                                            views.setTextViewText(R.id.txtNote, note);
+                                            views.setTextViewText(R.id.appwidget_txtIncrease, strong);
+                                            views.setTextViewText(R.id.appwidget_txtNormal, weak);
+                                            views.setTextViewText(R.id.appwidget_txtDecrease, ratio);
+
+                                            views.setImageViewBitmap(R.id.imageView, imageResponse.getBitmap());
+
+                                            appWidgetManager.updateAppWidget(appWidgetIds[i], views);
+
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.e("widget volley error", error.getMessage());
+                                }
+                            });
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
