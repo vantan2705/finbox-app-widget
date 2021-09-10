@@ -5,6 +5,7 @@
 Refer to App Widget Documentation for margin information
 http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     -->
+    <dimen name="update_period_Millis">1800000</dimen>
     <dimen name="normal_text_size">28sp</dimen>
 
     <dimen name="widget_margin">0dp</dimen>

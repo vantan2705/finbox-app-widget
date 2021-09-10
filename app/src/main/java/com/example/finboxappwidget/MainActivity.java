@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         AppWidgetManager appWidgetManager =
                 context.getSystemService(AppWidgetManager.class);
         ComponentName myProvider =
-                new ComponentName(context, OverviewBaseWidget.class);
+                new ComponentName(context, OverviewTrendWidget.class);
 
         if (appWidgetManager.isRequestPinAppWidgetSupported()) {
             // Create the PendingIntent object only if your app needs to be notified

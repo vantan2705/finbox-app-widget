@@ -17,6 +17,7 @@
 
     <color name="widget_overview_light_background">#fff</color>
     <color name="widget_overview_positive">#09470C</color>
+    <color name="widget_overview_normal">#F7941D</color>
     <color name="widget_overview_negative">#cc0000</color>
     <color name="widget_overview_odd_row_background">#edf1f5</color>
 </resources>

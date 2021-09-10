@@ -5,7 +5,7 @@
     android:weightSum="10"
     android:background="@color/widget_overview_light_background">
 
-<!--    Note-->
+    <!--    Note-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,14 +19,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="NỀN TẢNG"
+            android:text="Xu hướng"
             android:textSize="@dimen/widget_overview_text_size"
             android:textColor="#16447f"
             android:textStyle="bold"
             android:gravity="left">
         </TextView>
         <TextView
-            android:id="@+id/txtWidgetBaseNote"
+            android:id="@+id/txtWidgetTrendNote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -38,20 +38,19 @@
         </TextView>
     </LinearLayout>
 
-<!--    Chart-->
+    <!--    Chart-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="6.5"
         android:gravity="center">
         <ImageView
-            android:id="@+id/imageViewWidgetBase"
+            android:id="@+id/imageViewWidgetTrend"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-
     </LinearLayout>
 
-<!--    Table-->
+    <!--    Table-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -71,13 +70,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:layout_gravity="center_vertical"
-                android:text="Nền tảng CHẶT CHẼ"
+                android:text="Xu hướng TĂNG"
                 android:background="@color/widget_overview_odd_row_background"
                 android:textStyle="bold"
                 android:textColor="@color/widget_overview_positive"
                 android:textSize="@dimen/widget_overview_text_size"/>
             <TextView
-                android:id="@+id/txtWidgetBaseStrong"
+                android:id="@+id/txtWidgetTrendIncrease"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -103,13 +102,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:layout_gravity="center_vertical"
-                android:text="Nền tảng LỎNG LẺO"
+                android:text="Xu hướng TRUNG LẬP"
                 android:background="#fff"
-                android:textColor="@color/widget_overview_negative"
+                android:textColor="@color/widget_overview_normal"
                 android:textStyle="bold"
                 android:textSize="@dimen/widget_overview_text_size"/>
             <TextView
-                android:id="@+id/txtWidgetBaseWeak"
+                android:id="@+id/txtWidgetTrendNormal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -118,7 +117,7 @@
                 android:background="#fff"
                 android:textStyle="bold"
                 android:gravity="right"
-                android:textColor="@color/widget_overview_negative"
+                android:textColor="@color/widget_overview_normal"
                 android:textSize="@dimen/widget_overview_text_size"/>
         </LinearLayout>
 
@@ -135,13 +134,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:layout_gravity="center_vertical"
-                android:text="CHẶT CHẼ/LỎNG LẺO"
+                android:text="Xu hướng GIẢM"
                 android:background="@color/widget_overview_odd_row_background"
                 android:textStyle="bold"
                 android:textColor="#000"
                 android:textSize="@dimen/widget_overview_text_size"/>
             <TextView
-                android:id="@+id/txtWidgetBaseRatio"
+                android:id="@+id/txtWidgetTrendDecrease"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"

@@ -20,9 +20,10 @@ import java.util.HashMap;
 /**
  * Implementation of App Widget functionality.
  */
-public class OverviewBaseWidget extends AppWidgetProvider {
+public class OverviewTrendWidget extends AppWidgetProvider {
+
     private String dataUrl = "https://api.finbox.vn/api/app_new/getMarketData/";
-    private String imageUrl = "https://api.finbox.vn/api/widget/chart/base";
+    private String imageUrl = "https://api.finbox.vn/api/widget/chart/trend";
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -41,15 +42,15 @@ public class OverviewBaseWidget extends AppWidgetProvider {
                             marketTwoData.keys();
                             String overviewString = marketTwoData.getString("overview");
                             JSONObject overviewJSON = new JSONObject(overviewString);
-                            String chartBaseString = overviewJSON.getString("chartBase");
+                            String chartBaseString = overviewJSON.getString("chartTrend");
                             JSONObject chartBaseJSON = new JSONObject(chartBaseString);
 
-                            String strong = chartBaseJSON.getString("strong");
-                            String weak = chartBaseJSON.getString("weak");
-                            String ratio = chartBaseJSON.getString("ratio");
+                            String increase = chartBaseJSON.getString("increase");
+                            String normal = chartBaseJSON.getString("normal");
+                            String decrease = chartBaseJSON.getString("decrease");
                             String note = chartBaseJSON.getString("note");
 
-                            imageUrl += "?strong=" + strong + "&weak=" + weak;
+                            imageUrl += "?increase=" + increase + "&normal=" + normal + "&decrease=" + decrease;
                             ImageLoader imageLoader = MySingleton.getInstance(context).getImageLoader();
                             imageLoader.get(imageUrl, new ImageLoader.ImageListener() {
                                 @Override
@@ -57,12 +58,12 @@ public class OverviewBaseWidget extends AppWidgetProvider {
 
                                     if(imageResponse != null && imageResponse.getBitmap() != null){
                                         for (int i = 0; i<N; i++) {
-                                            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.overview_base_widget);
-                                            views.setTextViewText(R.id.txtWidgetBaseNote, note);
-                                            views.setTextViewText(R.id.txtWidgetBaseStrong, strong);
-                                            views.setTextViewText(R.id.txtWidgetBaseWeak, weak);
-                                            views.setTextViewText(R.id.txtWidgetBaseRatio, ratio);
-                                            views.setImageViewBitmap(R.id.imageViewWidgetBase, imageResponse.getBitmap());
+                                            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.overview_trend_widget);
+                                            views.setTextViewText(R.id.txtWidgetTrendNote, note);
+                                            views.setTextViewText(R.id.txtWidgetTrendIncrease, increase);
+                                            views.setTextViewText(R.id.txtWidgetTrendNormal, normal);
+                                            views.setTextViewText(R.id.txtWidgetTrendDecrease, decrease);
+                                            views.setImageViewBitmap(R.id.imageViewWidgetTrend, imageResponse.getBitmap());
                                             appWidgetManager.updateAppWidget(appWidgetIds[i], views);
                                         }
                                     }
