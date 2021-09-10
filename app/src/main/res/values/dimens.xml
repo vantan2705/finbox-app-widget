@@ -10,5 +10,6 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="widget_margin">0dp</dimen>
     <dimen name="widget_overview_text_size">15sp</dimen>
     <dimen name="widget_overview_chart_text_size">0.5sp</dimen>
+    <dimen name="widget_chart_table_padding_horizontal">4dp</dimen>
 
 </resources>

@@ -5,13 +5,14 @@
     android:weightSum="10"
     android:background="@color/widget_overview_light_background">
 
-
 <!--    Note-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_weight="1"
+        android:layout_weight="0.5"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/widget_chart_table_padding_horizontal"
         android:layout_marginBottom="15dp"
         android:weightSum="2">
         <TextView
@@ -41,14 +42,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="5"
-        android:gravity="center"
-        android:background="@android:color/transparent">
+        android:layout_weight="6.5"
+        android:gravity="center">
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:background="@android:color/transparent"
-            android:layout_height="250dp" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
 
@@ -58,24 +57,21 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:weightSum="3"
-        android:layout_weight="4">
+        android:layout_weight="3">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_weight="1"
             android:weightSum="7"
+            android:paddingHorizontal="@dimen/widget_chart_table_padding_horizontal"
             android:background="@color/widget_overview_odd_row_background">
             <TextView
                 android:id="@+id/appwidget_lblIncrease"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="4dp"
-                android:contentDescription="@string/appwidget_text"
+                android:layout_gravity="center_vertical"
                 android:text="Nền tảng CHẶT CHẼ"
                 android:background="@color/widget_overview_odd_row_background"
                 android:textStyle="bold"
@@ -86,11 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="4dp"
-                android:contentDescription="@string/appwidget_text"
+                android:layout_gravity="center_vertical"
                 android:text="loading"
                 android:background="@color/widget_overview_odd_row_background"
                 android:gravity="right"
@@ -105,17 +97,14 @@
             android:orientation="horizontal"
             android:layout_weight="1"
             android:weightSum="7"
+            android:paddingHorizontal="@dimen/widget_chart_table_padding_horizontal"
             android:background="#fff">
             <TextView
                 android:id="@+id/appwidget_lblNormal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
-                android:layout_centerInParent="true"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="4dp"
+                android:layout_gravity="center_vertical"
                 android:text="Nền tảng LỎNG LẺO"
                 android:background="#fff"
                 android:textColor="@color/widget_overview_negative"
@@ -126,11 +115,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:layout_centerInParent="true"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="4dp"
+                android:layout_gravity="center_vertical"
                 android:text="loading"
                 android:background="#fff"
                 android:textStyle="bold"
@@ -145,17 +130,14 @@
             android:orientation="horizontal"
             android:layout_weight="1"
             android:weightSum="7"
+            android:paddingHorizontal="@dimen/widget_chart_table_padding_horizontal"
             android:background="@color/widget_overview_odd_row_background">
             <TextView
                 android:id="@+id/appwidget_lblDecrease"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
-                android:layout_centerInParent="true"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="4dp"
+                android:layout_gravity="center_vertical"
                 android:text="CHẶT CHẼ/LỎNG LẺO"
                 android:background="@color/widget_overview_odd_row_background"
                 android:textStyle="bold"
@@ -166,10 +148,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="4dp"
+                android:layout_gravity="center_vertical"
                 android:text="loading"
                 android:background="@color/widget_overview_odd_row_background"
                 android:textStyle="bold"

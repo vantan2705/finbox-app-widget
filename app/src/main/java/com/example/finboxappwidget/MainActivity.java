@@ -12,7 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     private Button btnAddOverviewChartBase;
@@ -40,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         AppWidgetManager appWidgetManager =
                 context.getSystemService(AppWidgetManager.class);
         ComponentName myProvider =
-                new ComponentName(context, OverviewAppWidget.class);
+                new ComponentName(context, OverviewBaseWidget.class);
 
         if (appWidgetManager.isRequestPinAppWidgetSupported()) {
             // Create the PendingIntent object only if your app needs to be notified

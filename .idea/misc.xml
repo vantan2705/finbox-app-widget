@@ -4,13 +4,16 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/finbox/finbox-app-widget/app/src/main/res/drawable-nodpi/search_ticker_input.xml" value="0.25462962962962965" />
+        <entry key="..\:/finbox/finbox-app-widget/app/src/main/res/drawable-v21/app_widget_background.xml" value="0.14635416666666667" />
+        <entry key="..\:/finbox/finbox-app-widget/app/src/main/res/drawable-v21/app_widget_inner_view_background.xml" value="0.14635416666666667" />
         <entry key="..\:/finbox/finbox-app-widget/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.14635416666666667" />
         <entry key="..\:/finbox/finbox-app-widget/app/src/main/res/drawable/search_ticker_input.xml" value="0.2703125" />
         <entry key="..\:/finbox/finbox-app-widget/app/src/main/res/layout/activity_main.xml" value="0.13020833333333334" />
         <entry key="..\:/finbox/finbox-app-widget/app/src/main/res/layout/activity_ticker_detail.xml" value="0.152" />
-        <entry key="..\:/finbox/finbox-app-widget/app/src/main/res/layout/overview_app_widget.xml" value="0.13020833333333334" />
+        <entry key="..\:/finbox/finbox-app-widget/app/src/main/res/layout/overview_app_widget.xml" value="0.1" />
         <entry key="..\:/finbox/finbox-app-widget/app/src/main/res/layout/ticker_detail_widget.xml" value="0.1265625" />
         <entry key="..\:/finbox/finbox-app-widget/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.14635416666666667" />
+        <entry key="..\:/finbox/finbox-app-widget/app/src/main/res/xml/network_security_config.xml" value="0.13020833333333334" />
       </map>
     </option>
   </component>

@@ -7,12 +7,10 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,24 +20,23 @@ import java.util.HashMap;
 /**
  * Implementation of App Widget functionality.
  */
-public class OverviewAppWidget extends AppWidgetProvider {
-    static final int chartColumnWidth = 160;
+public class OverviewBaseWidget extends AppWidgetProvider {
+    private String dataUrl = "https://api.finbox.vn/api/app_new/getMarketData/";
+    private String imageUrl = "https://api.finbox.vn/api/widget/chart/base";
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         final int N = appWidgetIds.length;
-        String url = "https://api.finbox.vn/api/app_new/getMarketData/";
         HashMap data = new HashMap();
         data.put("day", 0);
         JSONObject jsonBody = new JSONObject(data);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.POST, url, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, dataUrl, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-
                             JSONObject marketTwoData = response.getJSONObject("marketTwoData");
                             marketTwoData.keys();
                             String overviewString = marketTwoData.getString("overview");
@@ -52,23 +49,21 @@ public class OverviewAppWidget extends AppWidgetProvider {
                             String ratio = chartBaseJSON.getString("ratio");
                             String note = chartBaseJSON.getString("note");
 
+                            imageUrl += "?strong=" + strong + "&weak=" + weak;
                             ImageLoader imageLoader = MySingleton.getInstance(context).getImageLoader();
-                            imageLoader.get("https://img.nhandan.com.vn/Files/Images/2020/07/26/giai_thuong_lon-1595747403778.jpg", new ImageLoader.ImageListener() {
+                            imageLoader.get(imageUrl, new ImageLoader.ImageListener() {
                                 @Override
                                 public void onResponse(ImageLoader.ImageContainer imageResponse, boolean isImmediate) {
 
                                     if(imageResponse != null && imageResponse.getBitmap() != null){
                                         for (int i = 0; i<N; i++) {
-                                            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.overview_app_widget);
+                                            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.overview_base_widget);
                                             views.setTextViewText(R.id.txtNote, note);
                                             views.setTextViewText(R.id.appwidget_txtIncrease, strong);
                                             views.setTextViewText(R.id.appwidget_txtNormal, weak);
                                             views.setTextViewText(R.id.appwidget_txtDecrease, ratio);
-
                                             views.setImageViewBitmap(R.id.imageView, imageResponse.getBitmap());
-
                                             appWidgetManager.updateAppWidget(appWidgetIds[i], views);
-
                                         }
                                     }
                                 }
@@ -93,8 +88,7 @@ public class OverviewAppWidget extends AppWidgetProvider {
                     }
                 });
 
-        RequestQueue requestQueue = Volley.newRequestQueue(context.getApplicationContext());
-        requestQueue.add(jsonObjectRequest);
+        MySingleton.getInstance(context).addToRequestQueue(jsonObjectRequest);
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
@@ -108,14 +102,4 @@ public class OverviewAppWidget extends AppWidgetProvider {
         // Enter relevant functionality for when the last widget is disabled
     }
 
-    public String getChart(int height) {
-        String chart = "";
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < chartColumnWidth; j++) {
-                chart += ".";
-            }
-            chart += "\n";
-        }
-        return chart;
-    }
 }

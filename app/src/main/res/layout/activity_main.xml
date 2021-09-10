@@ -11,7 +11,7 @@
         android:id="@+id/imageViewOverviewChartBase"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/widget_overview_chart_base_icon" />
+        app:srcCompat="@drawable/widget_overview_base_icon" />
 
     <Button
         android:id="@+id/btnAddOverviewChartBase"
