@@ -19,14 +19,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="XU HƯỚNG"
+            android:text="TÍN HIỆU"
             android:textSize="@dimen/widget_overview_text_size"
             android:textColor="#16447f"
             android:textStyle="bold"
             android:gravity="left">
         </TextView>
         <TextView
-            android:id="@+id/txtWidgetTrendNote"
+            android:id="@+id/txtWidgetSignalNote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -45,7 +45,7 @@
         android:layout_weight="6.5"
         android:gravity="center">
         <ImageView
-            android:id="@+id/imageViewWidgetTrend"
+            android:id="@+id/imageViewWidgetSignal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>
@@ -70,13 +70,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:layout_gravity="center_vertical"
-                android:text="Xu hướng TĂNG"
+                android:text="Tín hiệu MUA"
                 android:background="@color/widget_overview_odd_row_background"
                 android:textStyle="bold"
                 android:textColor="@color/widget_overview_positive"
                 android:textSize="@dimen/widget_overview_text_size"/>
             <TextView
-                android:id="@+id/txtWidgetTrendIncrease"
+                android:id="@+id/txtWidgetSignalBuy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -102,13 +102,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:layout_gravity="center_vertical"
-                android:text="Xu hướng TRUNG LẬP"
+                android:text="Tín hiệu BÁN"
                 android:background="#fff"
-                android:textColor="@color/widget_overview_normal"
+                android:textColor="@color/widget_overview_negative"
                 android:textStyle="bold"
                 android:textSize="@dimen/widget_overview_text_size"/>
             <TextView
-                android:id="@+id/txtWidgetTrendNormal"
+                android:id="@+id/txtWidgetSignalSell"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -117,7 +117,7 @@
                 android:background="#fff"
                 android:textStyle="bold"
                 android:gravity="right"
-                android:textColor="@color/widget_overview_normal"
+                android:textColor="@color/widget_overview_negative"
                 android:textSize="@dimen/widget_overview_text_size"/>
         </LinearLayout>
 
@@ -134,13 +134,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:layout_gravity="center_vertical"
-                android:text="Xu hướng GIẢM"
+                android:text="Tỷ lệ MUA/BÁN"
                 android:background="@color/widget_overview_odd_row_background"
                 android:textStyle="bold"
-                android:textColor="#000"
+                android:textColor="@color/widget_overview_ratio"
                 android:textSize="@dimen/widget_overview_text_size"/>
             <TextView
-                android:id="@+id/txtWidgetTrendDecrease"
+                android:id="@+id/txtWidgetSignalRatio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -149,7 +149,7 @@
                 android:background="@color/widget_overview_odd_row_background"
                 android:textStyle="bold"
                 android:gravity="right"
-                android:textColor="#000"
+                android:textColor="@color/widget_overview_ratio"
                 android:textSize="@dimen/widget_overview_text_size"/>
         </LinearLayout>
     </LinearLayout>
