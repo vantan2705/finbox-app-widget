@@ -7,17 +7,10 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/imageViewOverviewChartBase"
+    <ListView
+        android:id="@+id/lvWidget"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/widget_overview_base_icon" />
+        android:layout_height="match_parent" />
 
-    <Button
-        android:id="@+id/btnAddOverviewChartBase"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Thêm widget" />
 
 </LinearLayout>

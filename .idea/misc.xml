@@ -10,6 +10,8 @@
         <entry key="..\:/finbox/finbox-app-widget/app/src/main/res/drawable/search_ticker_input.xml" value="0.2703125" />
         <entry key="..\:/finbox/finbox-app-widget/app/src/main/res/layout/activity_main.xml" value="0.13020833333333334" />
         <entry key="..\:/finbox/finbox-app-widget/app/src/main/res/layout/activity_ticker_detail.xml" value="0.152" />
+        <entry key="..\:/finbox/finbox-app-widget/app/src/main/res/layout/custom_list_view_widget_activity.xml" value="0.115625" />
+        <entry key="..\:/finbox/finbox-app-widget/app/src/main/res/layout/item_custom_list_view_widget.xml" value="0.115625" />
         <entry key="..\:/finbox/finbox-app-widget/app/src/main/res/layout/overview_app_widget.xml" value="0.1" />
         <entry key="..\:/finbox/finbox-app-widget/app/src/main/res/layout/overview_base_widget.xml" value="0.12291666666666666" />
         <entry key="..\:/finbox/finbox-app-widget/app/src/main/res/layout/overview_n_n_widget.xml" value="0.12291666666666666" />

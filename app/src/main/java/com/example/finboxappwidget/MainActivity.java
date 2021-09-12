@@ -1,60 +1,65 @@
 package com.example.finboxappwidget;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.PendingIntent;
-import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    private Button btnAddOverviewChartBase;
+    private ListView lvWidget;
+    private ArrayList<WidgetItem> listWidgets;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnAddOverviewChartBase = (Button) findViewById(R.id.btnAddOverviewChartBase);
+//        Custom listview
+        lvWidget = (ListView) findViewById(R.id.lvWidget);
+        listWidgets = new ArrayList<>();
 
-        btnAddOverviewChartBase.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onClick(View v) {
-                pinWidget(v);
-            }
-        });
+        // Ticker detail
+        ComponentName componentNameTickerDetail =
+                new ComponentName(MainActivity.this, TickerDetailWidget.class);
+        listWidgets.add(
+                new WidgetItem("Tìm kiếm mã", R.drawable.widget_ticker_detail_icon, componentNameTickerDetail)
+        );
 
-    }
+        // Chart Trend
+        ComponentName componentNameOverviewTrend =
+                new ComponentName(MainActivity.this, OverviewTrendWidget.class);
+        listWidgets.add(
+                new WidgetItem("Biểu đồ xu hướng",R.drawable.widget_overview_trend_icon, componentNameOverviewTrend)
+        );
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void pinWidget(View view) {
-        Context context = MainActivity.this;
-        AppWidgetManager appWidgetManager =
-                context.getSystemService(AppWidgetManager.class);
-        ComponentName myProvider =
-                new ComponentName(context, OverviewNNWidget.class);
+        // Chart Base
+        ComponentName componentNameOverviewBase =
+                new ComponentName(MainActivity.this, OverviewBaseWidget.class);
+        listWidgets.add(
+                new WidgetItem("Biểu đồ nền tảng",R.drawable.widget_overview_base_icon, componentNameOverviewBase)
+        );
 
-        if (appWidgetManager.isRequestPinAppWidgetSupported()) {
-            // Create the PendingIntent object only if your app needs to be notified
-            // that the user allowed the widget to be pinned. Note that, if the pinning
-            // operation fails, your app isn't notified.
-            Intent pinnedWidgetCallbackIntent = new Intent();
+        // Chart Signal
+        ComponentName componentNameOverviewSignal =
+                new ComponentName(MainActivity.this, OverviewSignalWidget.class);
+        listWidgets.add(
+                new WidgetItem("Biểu đồ tín hiệu",R.drawable.widget_overview_signal_icon, componentNameOverviewSignal)
+        );
 
-            // Configure the intent so that your app's broadcast receiver gets
-            // the callback successfully. This callback receives the ID of the
-            // newly-pinned widget (EXTRA_APPWIDGET_ID).
-            PendingIntent successCallback = PendingIntent.getBroadcast(context, 0,
-                    pinnedWidgetCallbackIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // Chart NN
+        ComponentName componentNameOverviewNN =
+                new ComponentName(MainActivity.this, OverviewNNWidget.class);
+        listWidgets.add(
+                new WidgetItem("Biểu đồ nước ngoài",R.drawable.widget_overview_nn_icon, componentNameOverviewNN)
+        );
 
-            appWidgetManager.requestPinAppWidget(myProvider, null, successCallback);
-        }
+        WidgetAdapter adapter = new WidgetAdapter(this, R.layout.item_custom_list_view_widget,listWidgets);
+        lvWidget.setAdapter(adapter);
+
+        // End custom listview
+
     }
 
 }

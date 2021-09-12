@@ -11,6 +11,8 @@
         android:background="@drawable/search_ticker_input_widget"
         android:textColor="@color/white"
         android:textSize="@dimen/widget_overview_text_size"
+        android:maxLines="1"
+        android:singleLine="true"
         android:gravity="center_vertical"
         android:textColorHint="@color/light_blue_200"
         android:drawableRight="@drawable/icon_search"
