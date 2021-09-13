@@ -114,7 +114,7 @@ public class OverviewBaseWidget extends AppWidgetProvider {
 
         BarDataSet dataset = new BarDataSet(entries, "");
         dataset.setColors(new int[] {positiveColor, negativeColor});
-        dataset.setValueTextSize(25);
+        dataset.setValueTextSize(45);
 
         ArrayList<String> labels = new ArrayList<String>();
         labels.add("Strong");

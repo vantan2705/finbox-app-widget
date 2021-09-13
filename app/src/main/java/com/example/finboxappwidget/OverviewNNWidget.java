@@ -114,7 +114,7 @@ public class OverviewNNWidget extends AppWidgetProvider {
 
         PieDataSet dataset = new PieDataSet(entries, "");
         dataset.setColors(new int[] {positiveColor, negativeColor});
-        dataset.setValueTextSize(25);
+        dataset.setValueTextSize(30);
 
         PieData data = new PieData(dataset);
         data.setValueFormatter(new ValueFormatter() {

@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        android:layout_weight="0.5"
+        android:layout_weight="1"
         android:gravity="center_vertical"
         android:paddingHorizontal="@dimen/widget_chart_table_padding_horizontal"
         android:layout_marginBottom="15dp"
@@ -42,7 +42,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6.5"
+        android:layout_weight="5"
         android:gravity="center">
         <ImageView
             android:id="@+id/imageViewWidgetNN"
@@ -56,7 +56,7 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         android:weightSum="3"
-        android:layout_weight="3">
+        android:layout_weight="4">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

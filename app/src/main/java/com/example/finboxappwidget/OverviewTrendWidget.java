@@ -117,7 +117,7 @@ public class OverviewTrendWidget extends AppWidgetProvider {
 
         PieDataSet dataset = new PieDataSet(entries, "");
         dataset.setColors(new int[] {positiveColor, normalColor, negativeColor});
-        dataset.setValueTextSize(25);
+        dataset.setValueTextSize(30);
 
         ArrayList<String> labels = new ArrayList<String>();
         labels.add("Strong");
