@@ -3,18 +3,26 @@ package com.example.finboxappwidget;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
-import android.util.Log;
+import android.graphics.Bitmap;
+import android.view.View;
 import android.widget.RemoteViews;
+
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -23,7 +31,6 @@ import java.util.HashMap;
 public class OverviewNNWidget extends AppWidgetProvider {
 
     private String dataUrl = "https://api.finbox.vn/api/app_new/getMarketData/";
-    private String imageUrl = "https://api.finbox.vn/api/widget/chart/nn";
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -50,30 +57,24 @@ public class OverviewNNWidget extends AppWidgetProvider {
                             String substract = chartBaseJSON.getString("substract");
                             String note = chartBaseJSON.getString("note");
 
-                            imageUrl += "?buy=" + buy + "&sell=" + sell;
-                            ImageLoader imageLoader = MySingleton.getInstance(context).getImageLoader();
-                            imageLoader.get(imageUrl, new ImageLoader.ImageListener() {
-                                @Override
-                                public void onResponse(ImageLoader.ImageContainer imageResponse, boolean isImmediate) {
+                            float fBuy, fSell;
 
-                                    if(imageResponse != null && imageResponse.getBitmap() != null){
-                                        for (int i = 0; i<N; i++) {
-                                            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.overview_n_n_widget);
-                                            views.setTextViewText(R.id.txtWidgetNNNote, note);
-                                            views.setTextViewText(R.id.txtWidgetNNBuy, buy);
-                                            views.setTextViewText(R.id.txtWidgetNNSell, sell);
-                                            views.setTextViewText(R.id.txtWidgetNNSubstract, substract);
-                                            views.setImageViewBitmap(R.id.imageViewWidgetNN, imageResponse.getBitmap());
-                                            appWidgetManager.updateAppWidget(appWidgetIds[i], views);
-                                        }
-                                    }
-                                }
+                            try {
+                                fBuy = Float.parseFloat(buy);
+                                fSell = Float.parseFloat(sell);
+                            } catch (Exception e) {
+                                fBuy = fSell = 0;
+                            }
 
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Log.e("widget volley error", error.getMessage());
-                                }
-                            });
+                            for (int i = 0; i<N; i++) {
+                                RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.overview_n_n_widget);
+                                views.setTextViewText(R.id.txtWidgetNNNote, note);
+                                views.setTextViewText(R.id.txtWidgetNNBuy, buy);
+                                views.setTextViewText(R.id.txtWidgetNNSell, sell);
+                                views.setTextViewText(R.id.txtWidgetNNSubstract, substract);
+                                views.setImageViewBitmap(R.id.imageViewWidgetNN, chart(context, fBuy, fSell));
+                                appWidgetManager.updateAppWidget(appWidgetIds[i], views);
+                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -101,6 +102,45 @@ public class OverviewNNWidget extends AppWidgetProvider {
     @Override
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
+    }
+
+    public Bitmap chart(Context context, float buy, float sell) {
+        int positiveColor = ContextCompat.getColor(context, R.color.widget_overview_positive);
+        int negativeColor = ContextCompat.getColor(context, R.color.widget_overview_negative);
+        PieChart chart = new PieChart(context);
+        ArrayList<PieEntry> entries = new ArrayList<>();
+        entries.add(new PieEntry(buy, "Mua"));
+        entries.add(new PieEntry(Math.abs(sell), "Bán"));
+
+        PieDataSet dataset = new PieDataSet(entries, "");
+        dataset.setColors(new int[] {positiveColor, negativeColor});
+        dataset.setValueTextSize(25);
+
+        PieData data = new PieData(dataset);
+        data.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                float sum = buy + Math.abs(sell);
+                float percentage = value / sum;
+                return String.format("%.01f", percentage * 100) + "%";
+            }
+        });
+        chart.setData(data);
+        chart.getDescription().setEnabled(false);
+        chart.getLegend().setEnabled(false);
+        chart.setDrawHoleEnabled(false);
+        chart.setDrawSliceText(false);
+
+        chart.setDrawingCacheEnabled(true);
+        // this is the important code :)
+        // Without it the view will have a dimension of 0,0 and the bitmap will be null
+        chart.measure(View.MeasureSpec.makeMeasureSpec(1000, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(1000, View.MeasureSpec.EXACTLY));
+        chart.layout(0, 0, chart.getMeasuredWidth(), chart.getMeasuredHeight());
+        chart.buildDrawingCache(true);
+        Bitmap bitmap = Bitmap.createBitmap(chart.getDrawingCache());
+        chart.setDrawingCacheEnabled(false); // clear drawing cache
+        return bitmap;
     }
 
 }

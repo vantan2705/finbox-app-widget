@@ -4,7 +4,6 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -13,7 +12,6 @@ import androidx.core.content.ContextCompat;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -60,15 +58,13 @@ public class OverviewSignalWidget extends AppWidgetProvider {
                             String ratio = chartBaseJSON.getString("ratio");
                             String note = chartBaseJSON.getString("note");
 
-                            float fBuy;
-                            float fSell;
+                            float fBuy, fSell;
 
                             try {
                                 fBuy = Float.parseFloat(buy);
                                 fSell = Float.parseFloat(sell);
                             } catch (Exception e) {
-                                fBuy = 0f;
-                                fSell = 0f;
+                                fBuy = fSell = 0;
                             }
 
                             for (int i = 0; i<N; i++) {

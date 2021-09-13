@@ -57,15 +57,13 @@ public class OverviewBaseWidget extends AppWidgetProvider {
                             String ratio = chartBaseJSON.getString("ratio");
                             String note = chartBaseJSON.getString("note");
 
-                            float fStrong;
-                            float fWeak;
+                            float fStrong, fWeak;
 
                             try {
                                 fStrong = Float.parseFloat(strong);
                                 fWeak = Float.parseFloat(weak);
                             } catch (Exception e) {
-                                fStrong = 0f;
-                                fWeak = 0f;
+                                fStrong = fWeak = 0;
                             }
 
                             for (int i = 0; i<N; i++) {
