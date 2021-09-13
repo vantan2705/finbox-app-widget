@@ -8,7 +8,7 @@
 <!--    Note-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:orientation="horizontal"
         android:layout_weight="0.5"
         android:gravity="center_vertical"
@@ -41,8 +41,9 @@
 <!--    Chart-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="6.5"
+        android:layout_height="0dp"
+        android:layout_weight="6"
+        android:paddingVertical="-20dp"
         android:gravity="center">
         <ImageView
             android:id="@+id/imageViewWidgetBase"
@@ -54,10 +55,10 @@
 <!--    Table-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:orientation="vertical"
         android:weightSum="3"
-        android:layout_weight="3">
+        android:layout_weight="3.5">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

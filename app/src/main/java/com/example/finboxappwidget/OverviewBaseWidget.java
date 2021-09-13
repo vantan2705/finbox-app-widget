@@ -3,18 +3,27 @@ package com.example.finboxappwidget;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
-import android.util.Log;
+import android.graphics.Bitmap;
+import android.view.View;
 import android.widget.RemoteViews;
+
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -22,7 +31,6 @@ import java.util.HashMap;
  */
 public class OverviewBaseWidget extends AppWidgetProvider {
     private String dataUrl = "https://api.finbox.vn/api/app_new/getMarketData/";
-    private String imageUrl = "https://api.finbox.vn/api/widget/chart/base";
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -49,30 +57,26 @@ public class OverviewBaseWidget extends AppWidgetProvider {
                             String ratio = chartBaseJSON.getString("ratio");
                             String note = chartBaseJSON.getString("note");
 
-                            imageUrl += "?strong=" + strong + "&weak=" + weak;
-                            ImageLoader imageLoader = MySingleton.getInstance(context).getImageLoader();
-                            imageLoader.get(imageUrl, new ImageLoader.ImageListener() {
-                                @Override
-                                public void onResponse(ImageLoader.ImageContainer imageResponse, boolean isImmediate) {
+                            float fStrong;
+                            float fWeak;
 
-                                    if(imageResponse != null && imageResponse.getBitmap() != null){
-                                        for (int i = 0; i<N; i++) {
-                                            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.overview_base_widget);
-                                            views.setTextViewText(R.id.txtWidgetBaseNote, note);
-                                            views.setTextViewText(R.id.txtWidgetBaseStrong, strong);
-                                            views.setTextViewText(R.id.txtWidgetBaseWeak, weak);
-                                            views.setTextViewText(R.id.txtWidgetBaseRatio, ratio);
-                                            views.setImageViewBitmap(R.id.imageViewWidgetBase, imageResponse.getBitmap());
-                                            appWidgetManager.updateAppWidget(appWidgetIds[i], views);
-                                        }
-                                    }
-                                }
+                            try {
+                                fStrong = Float.parseFloat(strong);
+                                fWeak = Float.parseFloat(weak);
+                            } catch (Exception e) {
+                                fStrong = 0f;
+                                fWeak = 0f;
+                            }
 
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Log.e("widget volley error", error.getMessage());
-                                }
-                            });
+                            for (int i = 0; i<N; i++) {
+                                RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.overview_base_widget);
+                                views.setTextViewText(R.id.txtWidgetBaseNote, note);
+                                views.setTextViewText(R.id.txtWidgetBaseStrong, strong);
+                                views.setTextViewText(R.id.txtWidgetBaseWeak, weak);
+                                views.setTextViewText(R.id.txtWidgetBaseRatio, ratio);
+                                views.setImageViewBitmap(R.id.imageViewWidgetBase, chart(context, fStrong, fWeak));
+                                appWidgetManager.updateAppWidget(appWidgetIds[i], views);
+                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -102,4 +106,56 @@ public class OverviewBaseWidget extends AppWidgetProvider {
         // Enter relevant functionality for when the last widget is disabled
     }
 
+    public Bitmap chart(Context context, float strong, float weak) {
+        int positiveColor = ContextCompat.getColor(context, R.color.widget_overview_positive);
+        int negativeColor = ContextCompat.getColor(context, R.color.widget_overview_negative);
+        BarChart chart = new BarChart(context);
+        ArrayList<BarEntry> entries = new ArrayList<>();
+        entries.add(new BarEntry(0f, strong));
+        entries.add(new BarEntry(6f, weak));
+
+        BarDataSet dataset = new BarDataSet(entries, "");
+        dataset.setColors(new int[] {positiveColor, negativeColor});
+        dataset.setValueTextSize(25);
+
+        ArrayList<String> labels = new ArrayList<String>();
+        labels.add("Strong");
+        labels.add("Weak");
+        BarData data = new BarData(dataset);
+        data.setBarWidth(5f);
+        data.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return String.valueOf((int) value);
+            }
+        });
+        chart.setData(data);
+        chart.getDescription().setEnabled(false);
+        chart.getLegend().setEnabled(false);
+        chart.setFitBars(true); // value align center
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setEnabled(false);
+        xAxis.setCenterAxisLabels(true); // set label center
+        xAxis.setDrawGridLines(true);
+
+        chart.getAxisLeft().setTextSize(15f);
+        chart.getAxisLeft().setDrawLabels(false);
+        chart.getAxisRight().setDrawLabels(false);
+        chart.getAxisLeft().setEnabled(false);
+        chart.getAxisRight().setEnabled(false);
+        chart.getAxisLeft().setDrawGridLines(false);
+        chart.getAxisRight().setDrawGridLines(false);
+
+        chart.setDrawingCacheEnabled(true);
+        // this is the important code :)
+        // Without it the view will have a dimension of 0,0 and the bitmap will be null
+        chart.measure(View.MeasureSpec.makeMeasureSpec(1000, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(1000, View.MeasureSpec.EXACTLY));
+        chart.layout(0, 0, chart.getMeasuredWidth(), chart.getMeasuredHeight());
+        chart.buildDrawingCache(true);
+        Bitmap bitmap = Bitmap.createBitmap(chart.getDrawingCache());
+        chart.setDrawingCacheEnabled(false); // clear drawing cache
+        return bitmap;
+    }
 }
