@@ -14,6 +14,7 @@
         android:theme="@style/Theme.FinboxAppWidget">
         <receiver
             android:name=".OverviewNNWidget"
+            android:label="Biểu đồ nước ngoài"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -25,6 +26,7 @@
         </receiver>
         <receiver
             android:name=".OverviewSignalWidget"
+            android:label="Biểu đồ tín hiệu"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -36,6 +38,7 @@
         </receiver>
         <receiver
             android:name=".OverviewTrendWidget"
+            android:label="Biểu đồ xu hướng"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -53,6 +56,7 @@
 
         <receiver
             android:name=".TickerDetailWidget"
+            android:label="Tìm kiếm mã"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -64,6 +68,7 @@
         </receiver>
         <receiver
             android:name=".OverviewBaseWidget"
+            android:label="Biểu đồ nền tảng"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
