@@ -58,7 +58,6 @@ public class TickerDetailActivity extends AppCompatActivity {
             try {
                 startActivity(intent);
                 finish();
-                System.exit(0);
             } catch (ActivityNotFoundException anfe) {
                 Toast.makeText(TickerDetailActivity.this, anfe.getMessage(), Toast.LENGTH_SHORT).show();
             }
