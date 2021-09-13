@@ -25,6 +25,10 @@ public class TickerDetailActivity extends AppCompatActivity {
 
         editTicker = (EditText) findViewById(R.id.editTicker);
         editTicker.requestFocus();
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (inputMethodManager != null) {
+            inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        }
         editTicker.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -37,6 +41,12 @@ public class TickerDetailActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStop() {
+        finish();
+        super.onStop();
+    }
+
     private void performSearch() {
         String ticker = editTicker.getText().toString();
         ticker = ticker.replaceAll("\\s+","");
@@ -44,16 +54,13 @@ public class TickerDetailActivity extends AppCompatActivity {
             Toast.makeText(TickerDetailActivity.this, "Mã không hợp lệ. Vui lòng nhập lại!", Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent (Intent.ACTION_VIEW);
-            intent.setData (Uri.parse(TICKER_DETAIL_URL + ticker));
+            intent.setData (Uri.parse(TICKER_DETAIL_URL + ticker.toUpperCase()));
             try {
                 startActivity(intent);
+                finish();
             } catch (ActivityNotFoundException anfe) {
                 Toast.makeText(TickerDetailActivity.this, anfe.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
-
-//        editTicker.clearFocus();
-//        InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//        in.hideSoftInputFromWindow(editTicker.getWindowToken(), 0);
     }
 }

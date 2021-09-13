@@ -1,9 +1,11 @@
 package com.example.finboxappwidget;
 
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -64,24 +66,54 @@ public class WidgetAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppWidgetManager appWidgetManager =
-                        context.getSystemService(AppWidgetManager.class);
-                ComponentName myProvider = widget.getComponentName();
 
-                if (appWidgetManager.isRequestPinAppWidgetSupported()) {
-                    // Create the PendingIntent object only if your app needs to be notified
-                    // that the user allowed the widget to be pinned. Note that, if the pinning
-                    // operation fails, your app isn't notified.
-                    Intent pinnedWidgetCallbackIntent = new Intent();
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-                    // Configure the intent so that your app's broadcast receiver gets
-                    // the callback successfully. This callback receives the ID of the
-                    // newly-pinned widget (EXTRA_APPWIDGET_ID).
-                    PendingIntent successCallback = PendingIntent.getBroadcast(context, 0,
-                            pinnedWidgetCallbackIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                builder.setTitle("Xác nhận");
+                builder.setMessage("Bạn muốn thêm widget vào màn hình chính?");
 
-                    appWidgetManager.requestPinAppWidget(myProvider, null, successCallback);
-                }
+                builder.setPositiveButton("CHẤP NHẬN", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        // Do nothing, but close the dialog
+                        dialog.dismiss();
+
+                        // Excute add widget to homescreen
+                        AppWidgetManager appWidgetManager =
+                                context.getSystemService(AppWidgetManager.class);
+                        ComponentName myProvider = widget.getComponentName();
+
+                        if (appWidgetManager.isRequestPinAppWidgetSupported()) {
+                            // Create the PendingIntent object only if your app needs to be notified
+                            // that the user allowed the widget to be pinned. Note that, if the pinning
+                            // operation fails, your app isn't notified.
+                            Intent pinnedWidgetCallbackIntent = new Intent();
+
+                            // Configure the intent so that your app's broadcast receiver gets
+                            // the callback successfully. This callback receives the ID of the
+                            // newly-pinned widget (EXTRA_APPWIDGET_ID).
+                            PendingIntent successCallback = PendingIntent.getBroadcast(context, 0,
+                                    pinnedWidgetCallbackIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                            appWidgetManager.requestPinAppWidget(myProvider, null, successCallback);
+                        }
+
+                    }
+                });
+
+                builder.setNegativeButton("Từ chối", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        // Do nothing
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
 
