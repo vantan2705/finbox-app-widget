@@ -133,12 +133,15 @@ public class OverviewBaseWidget extends AppWidgetProvider {
         chart.getDescription().setEnabled(false);
         chart.getLegend().setEnabled(false);
         chart.setFitBars(true); // value align center
+        chart.setExtraTopOffset(50); // Top padding to avoid value covered
 
         XAxis xAxis = chart.getXAxis();
         xAxis.setEnabled(false);
         xAxis.setCenterAxisLabels(true); // set label center
         xAxis.setDrawGridLines(true);
 
+        chart.getAxisLeft().setAxisMinimum(0f); // Đúng tỉ lệ giữa 2 cột
+        chart.getAxisRight().setAxisMinimum(0f); // Đúng tỉ lệ giữa 2 cột
         chart.getAxisLeft().setTextSize(15f);
         chart.getAxisLeft().setDrawLabels(false);
         chart.getAxisRight().setDrawLabels(false);
