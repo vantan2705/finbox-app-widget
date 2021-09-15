@@ -96,9 +96,7 @@ public class OverviewSignalWidget extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        if (MyNetworkManager.isOnline(context)) {
-            updateAppWidget(context, appWidgetManager, appWidgetIds);
-        }
+        updateAppWidget(context, appWidgetManager, appWidgetIds);
     }
 
     @Override

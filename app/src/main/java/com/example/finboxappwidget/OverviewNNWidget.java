@@ -97,9 +97,7 @@ public class OverviewNNWidget extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        if (MyNetworkManager.isOnline(context)) {
-            OverviewNNWidget.updateAppWidget(context, appWidgetManager, appWidgetIds);
-        }
+        OverviewNNWidget.updateAppWidget(context, appWidgetManager, appWidgetIds);
     }
 
     @Override

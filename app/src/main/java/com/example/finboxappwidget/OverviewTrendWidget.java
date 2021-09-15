@@ -30,11 +30,9 @@ import java.util.HashMap;
  */
 public class OverviewTrendWidget extends AppWidgetProvider {
 
-    private String dataUrl = "https://api.finbox.vn/api/app_new/getMarketData/";
+    static String dataUrl = "https://api.finbox.vn/api/app_new/getMarketData/";
 
-    @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        final int N = appWidgetIds.length;
+    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         HashMap data = new HashMap();
         data.put("day", 0);
         JSONObject jsonBody = new JSONObject(data);
@@ -67,14 +65,16 @@ public class OverviewTrendWidget extends AppWidgetProvider {
                                 fIncrease = fNormal = fDecrease = 0;
                             }
 
-                            for (int i = 0; i<N; i++) {
-                                RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.overview_trend_widget);
-                                views.setTextViewText(R.id.txtWidgetTrendNote, note);
-                                views.setTextViewText(R.id.txtWidgetTrendIncrease, increase);
-                                views.setTextViewText(R.id.txtWidgetTrendNormal, normal);
-                                views.setTextViewText(R.id.txtWidgetTrendDecrease, decrease);
-                                views.setImageViewBitmap(R.id.imageViewWidgetTrend, chart(context, fIncrease, fNormal, fDecrease));
-                                appWidgetManager.updateAppWidget(appWidgetIds[i], views);
+                            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.overview_trend_widget);
+                            views.setTextViewText(R.id.txtWidgetTrendNote, note);
+                            views.setTextViewText(R.id.txtWidgetTrendIncrease, increase);
+                            views.setTextViewText(R.id.txtWidgetTrendNormal, normal);
+                            views.setTextViewText(R.id.txtWidgetTrendDecrease, decrease);
+                            views.setImageViewBitmap(R.id.imageViewWidgetTrend, chart(context, fIncrease, fNormal, fDecrease));
+
+                            // Instruct the widget manager to update the widget
+                            for (int appWidgetId : appWidgetIds) {
+                                appWidgetManager.updateAppWidget(appWidgetId, views);
                             }
 
                         } catch (JSONException e) {
@@ -92,7 +92,11 @@ public class OverviewTrendWidget extends AppWidgetProvider {
                 });
 
         MySingleton.getInstance(context).addToRequestQueue(jsonObjectRequest);
-        super.onUpdate(context, appWidgetManager, appWidgetIds);
+    }
+
+    @Override
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        updateAppWidget(context, appWidgetManager, appWidgetIds);
     }
 
     @Override
@@ -105,7 +109,7 @@ public class OverviewTrendWidget extends AppWidgetProvider {
         // Enter relevant functionality for when the last widget is disabled
     }
 
-    public Bitmap chart(Context context, float increase, float normal, float decrease) {
+    static Bitmap chart(Context context, float increase, float normal, float decrease) {
         int positiveColor = ContextCompat.getColor(context, R.color.widget_overview_positive);
         int negativeColor = ContextCompat.getColor(context, R.color.widget_overview_negative);
         int normalColor = ContextCompat.getColor(context, R.color.widget_overview_normal);
