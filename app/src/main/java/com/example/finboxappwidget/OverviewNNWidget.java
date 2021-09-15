@@ -97,7 +97,7 @@ public class OverviewNNWidget extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        if (isOnline(context)) {
+        if (MyNetworkManager.isOnline(context)) {
             OverviewNNWidget.updateAppWidget(context, appWidgetManager, appWidgetIds);
         }
     }
@@ -149,13 +149,6 @@ public class OverviewNNWidget extends AppWidgetProvider {
         Bitmap bitmap = Bitmap.createBitmap(chart.getDrawingCache());
         chart.setDrawingCacheEnabled(false); // clear drawing cache
         return bitmap;
-    }
-
-    public boolean isOnline(Context context) {
-        ConnectivityManager cm =
-                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
 }

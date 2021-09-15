@@ -31,11 +31,9 @@ import java.util.HashMap;
  */
 public class OverviewSignalWidget extends AppWidgetProvider {
 
-    private String dataUrl = "https://api.finbox.vn/api/app_new/getMarketData/";
+    static String dataUrl = "https://api.finbox.vn/api/app_new/getMarketData/";
 
-    @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        final int N = appWidgetIds.length;
+    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         HashMap data = new HashMap();
         data.put("day", 0);
         JSONObject jsonBody = new JSONObject(data);
@@ -67,14 +65,16 @@ public class OverviewSignalWidget extends AppWidgetProvider {
                                 fBuy = fSell = 0;
                             }
 
-                            for (int i = 0; i<N; i++) {
-                                RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.overview_signal_widget);
-                                views.setTextViewText(R.id.txtWidgetSignalNote, note);
-                                views.setTextViewText(R.id.txtWidgetSignalBuy, buy);
-                                views.setTextViewText(R.id.txtWidgetSignalSell, sell);
-                                views.setTextViewText(R.id.txtWidgetSignalRatio, ratio);
-                                views.setImageViewBitmap(R.id.imageViewWidgetSignal, chart(context, fBuy, fSell));
-                                appWidgetManager.updateAppWidget(appWidgetIds[i], views);
+                            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.overview_signal_widget);
+                            views.setTextViewText(R.id.txtWidgetSignalNote, note);
+                            views.setTextViewText(R.id.txtWidgetSignalBuy, buy);
+                            views.setTextViewText(R.id.txtWidgetSignalSell, sell);
+                            views.setTextViewText(R.id.txtWidgetSignalRatio, ratio);
+                            views.setImageViewBitmap(R.id.imageViewWidgetSignal, chart(context, fBuy, fSell));
+
+                            // Instruct the widget manager to update the widget
+                            for (int appWidgetId : appWidgetIds) {
+                                appWidgetManager.updateAppWidget(appWidgetId, views);
                             }
 
                         } catch (JSONException e) {
@@ -92,7 +92,13 @@ public class OverviewSignalWidget extends AppWidgetProvider {
                 });
 
         MySingleton.getInstance(context).addToRequestQueue(jsonObjectRequest);
-        super.onUpdate(context, appWidgetManager, appWidgetIds);
+    }
+
+    @Override
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        if (MyNetworkManager.isOnline(context)) {
+            updateAppWidget(context, appWidgetManager, appWidgetIds);
+        }
     }
 
     @Override
@@ -105,7 +111,7 @@ public class OverviewSignalWidget extends AppWidgetProvider {
         // Enter relevant functionality for when the last widget is disabled
     }
 
-    public Bitmap chart(Context context, float buy, float sell) {
+    static Bitmap chart(Context context, float buy, float sell) {
         int positiveColor = ContextCompat.getColor(context, R.color.widget_overview_positive);
         int negativeColor = ContextCompat.getColor(context, R.color.widget_overview_negative);
         BarChart chart = new BarChart(context);

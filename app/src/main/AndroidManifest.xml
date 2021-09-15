@@ -14,6 +14,9 @@
         android:theme="@style/Theme.FinboxAppWidget"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".OverviewSignalWidgetConfigure"
+            android:exported="true" />
+        <activity
             android:name=".OverviewNNWidgetConfigure"
             android:exported="true" />
         <activity
