@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:description="@string/app_widget_description"
+    android:configure="com.example.finboxappwidget.OverviewBaseWidgetConfigure"
     android:initialKeyguardLayout="@layout/overview_base_widget"
     android:initialLayout="@layout/overview_base_widget"
     android:minWidth="180dp"

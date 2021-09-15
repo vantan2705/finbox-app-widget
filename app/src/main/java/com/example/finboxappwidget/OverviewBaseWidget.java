@@ -4,6 +4,9 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -30,11 +33,10 @@ import java.util.HashMap;
  * Implementation of App Widget functionality.
  */
 public class OverviewBaseWidget extends AppWidgetProvider {
-    private String dataUrl = "https://api.finbox.vn/api/app_new/getMarketData/";
+    static String dataUrl = "https://api.finbox.vn/api/app_new/getMarketData/";
 
-    @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        final int N = appWidgetIds.length;
+    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
+                                int[] appWidgetIds) {
         HashMap data = new HashMap();
         data.put("day", 0);
         JSONObject jsonBody = new JSONObject(data);
@@ -66,16 +68,17 @@ public class OverviewBaseWidget extends AppWidgetProvider {
                                 fStrong = fWeak = 0;
                             }
 
-                            for (int i = 0; i<N; i++) {
-                                RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.overview_base_widget);
-                                views.setTextViewText(R.id.txtWidgetBaseNote, note);
-                                views.setTextViewText(R.id.txtWidgetBaseStrong, strong);
-                                views.setTextViewText(R.id.txtWidgetBaseWeak, weak);
-                                views.setTextViewText(R.id.txtWidgetBaseRatio, ratio);
-                                views.setImageViewBitmap(R.id.imageViewWidgetBase, chart(context, fStrong, fWeak));
-                                appWidgetManager.updateAppWidget(appWidgetIds[i], views);
-                            }
+                            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.overview_base_widget);
+                            views.setTextViewText(R.id.txtWidgetBaseNote, note);
+                            views.setTextViewText(R.id.txtWidgetBaseStrong, strong);
+                            views.setTextViewText(R.id.txtWidgetBaseWeak, weak);
+                            views.setTextViewText(R.id.txtWidgetBaseRatio, ratio);
+                            views.setImageViewBitmap(R.id.imageViewWidgetBase, chart(context, fStrong, fWeak));
 
+                            // Instruct the widget manager to update the widget
+                            for (int appWidgetId : appWidgetIds) {
+                                appWidgetManager.updateAppWidget(appWidgetId, views);
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -91,7 +94,13 @@ public class OverviewBaseWidget extends AppWidgetProvider {
                 });
 
         MySingleton.getInstance(context).addToRequestQueue(jsonObjectRequest);
-        super.onUpdate(context, appWidgetManager, appWidgetIds);
+    }
+
+    @Override
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        if (isOnline(context)) {
+            OverviewBaseWidget.updateAppWidget(context, appWidgetManager, appWidgetIds);
+        }
     }
 
     @Override
@@ -104,7 +113,7 @@ public class OverviewBaseWidget extends AppWidgetProvider {
         // Enter relevant functionality for when the last widget is disabled
     }
 
-    public Bitmap chart(Context context, float strong, float weak) {
+    static public Bitmap chart(Context context, float strong, float weak) {
         int positiveColor = ContextCompat.getColor(context, R.color.widget_overview_positive);
         int negativeColor = ContextCompat.getColor(context, R.color.widget_overview_negative);
         BarChart chart = new BarChart(context);
@@ -158,5 +167,12 @@ public class OverviewBaseWidget extends AppWidgetProvider {
         Bitmap bitmap = Bitmap.createBitmap(chart.getDrawingCache());
         chart.setDrawingCacheEnabled(false); // clear drawing cache
         return bitmap;
+    }
+
+    public boolean isOnline(Context context) {
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }
