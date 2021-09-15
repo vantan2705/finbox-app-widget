@@ -4,6 +4,8 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -30,11 +32,9 @@ import java.util.HashMap;
  */
 public class OverviewNNWidget extends AppWidgetProvider {
 
-    private String dataUrl = "https://api.finbox.vn/api/app_new/getMarketData/";
+    static String dataUrl = "https://api.finbox.vn/api/app_new/getMarketData/";
 
-    @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        final int N = appWidgetIds.length;
+    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         HashMap data = new HashMap();
         data.put("day", 0);
         JSONObject jsonBody = new JSONObject(data);
@@ -66,14 +66,16 @@ public class OverviewNNWidget extends AppWidgetProvider {
                                 fBuy = fSell = 0;
                             }
 
-                            for (int i = 0; i<N; i++) {
-                                RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.overview_n_n_widget);
-                                views.setTextViewText(R.id.txtWidgetNNNote, note);
-                                views.setTextViewText(R.id.txtWidgetNNBuy, buy);
-                                views.setTextViewText(R.id.txtWidgetNNSell, sell);
-                                views.setTextViewText(R.id.txtWidgetNNSubstract, substract);
-                                views.setImageViewBitmap(R.id.imageViewWidgetNN, chart(context, fBuy, fSell));
-                                appWidgetManager.updateAppWidget(appWidgetIds[i], views);
+                            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.overview_n_n_widget);
+                            views.setTextViewText(R.id.txtWidgetNNNote, note);
+                            views.setTextViewText(R.id.txtWidgetNNBuy, buy);
+                            views.setTextViewText(R.id.txtWidgetNNSell, sell);
+                            views.setTextViewText(R.id.txtWidgetNNSubstract, substract);
+                            views.setImageViewBitmap(R.id.imageViewWidgetNN, chart(context, fBuy, fSell));
+
+                            // Instruct the widget manager to update the widget
+                            for (int appWidgetId : appWidgetIds) {
+                                appWidgetManager.updateAppWidget(appWidgetId, views);
                             }
 
                         } catch (JSONException e) {
@@ -91,7 +93,13 @@ public class OverviewNNWidget extends AppWidgetProvider {
                 });
 
         MySingleton.getInstance(context).addToRequestQueue(jsonObjectRequest);
-        super.onUpdate(context, appWidgetManager, appWidgetIds);
+    }
+
+    @Override
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        if (isOnline(context)) {
+            OverviewNNWidget.updateAppWidget(context, appWidgetManager, appWidgetIds);
+        }
     }
 
     @Override
@@ -104,7 +112,7 @@ public class OverviewNNWidget extends AppWidgetProvider {
         // Enter relevant functionality for when the last widget is disabled
     }
 
-    public Bitmap chart(Context context, float buy, float sell) {
+    static Bitmap chart(Context context, float buy, float sell) {
         int positiveColor = ContextCompat.getColor(context, R.color.widget_overview_positive);
         int negativeColor = ContextCompat.getColor(context, R.color.widget_overview_negative);
         PieChart chart = new PieChart(context);
@@ -141,6 +149,13 @@ public class OverviewNNWidget extends AppWidgetProvider {
         Bitmap bitmap = Bitmap.createBitmap(chart.getDrawingCache());
         chart.setDrawingCacheEnabled(false); // clear drawing cache
         return bitmap;
+    }
+
+    public boolean isOnline(Context context) {
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
 }

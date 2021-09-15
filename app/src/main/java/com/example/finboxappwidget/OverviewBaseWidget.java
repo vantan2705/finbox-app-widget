@@ -113,7 +113,7 @@ public class OverviewBaseWidget extends AppWidgetProvider {
         // Enter relevant functionality for when the last widget is disabled
     }
 
-    static public Bitmap chart(Context context, float strong, float weak) {
+    static Bitmap chart(Context context, float strong, float weak) {
         int positiveColor = ContextCompat.getColor(context, R.color.widget_overview_positive);
         int negativeColor = ContextCompat.getColor(context, R.color.widget_overview_negative);
         BarChart chart = new BarChart(context);
