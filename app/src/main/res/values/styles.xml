@@ -9,4 +9,9 @@
         <item name="android:background">?android:attr/colorBackground</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
+
+    <style name="Autocomplete">
+        <item name="colorControlNormal">@color/primary_color</item>
+        <item name="colorControlActivated">@color/primary_color</item>
+    </style>
 </resources>
