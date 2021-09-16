@@ -16,8 +16,11 @@
         android:theme="@style/Theme.FinboxAppWidget"
         android:usesCleartextTraffic="true">
         <service
-            android:name=".UpdateOverviewSignalService"
+            android:name=".UpdateOverviewTrendService"
             android:exported="false"></service>
+        <service
+            android:name=".UpdateOverviewSignalService"
+            android:exported="false" />
         <service
             android:name=".UpdateOverviewNNService"
             android:exported="false" />
