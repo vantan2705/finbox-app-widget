@@ -1,8 +1,19 @@
 package com.example.finboxappwidget;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -10,11 +21,18 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     private ListView lvWidget;
     private ArrayList<WidgetItem> listWidgets;
+    private Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        updateAllWidgets();
+        setPowerWhiteListReceiver();
+
         setContentView(R.layout.activity_main);
+
+        requestPermission();
 
 //        Custom listview
         lvWidget = (ListView) findViewById(R.id.lvWidget);
@@ -60,6 +78,50 @@ public class MainActivity extends AppCompatActivity {
 
         // End custom listview
 
+    }
+
+    public void requestPermission() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage("Để ứng dụng cập nhật thông tin chính xác, bạn cần cho phép ứng dụng chạy nền")
+                .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // FIRE ZE MISSILES!
+                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            Intent intent = new Intent();
+                            String packageName = getPackageName();
+                            PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+                            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                                intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                                intent.setData(Uri.parse("package:" + getPackageName()));
+                                startActivity(intent);
+                            }
+                        }
+                    }
+                })
+                .setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+        builder.create().show();
+    }
+
+    public void updateAllWidgets() {
+        OverviewBaseWidget.updateAppWidget(context);
+        OverviewNNWidget.updateAppWidget(context);
+        OverviewTrendWidget.updateAppWidget(context);
+        OverviewSignalWidget.updateAppWidget(context);
+    }
+
+    public void setPowerWhiteListReceiver() {
+        IntentFilter intentFilter = new IntentFilter("android.os.action.POWER_SAVE_WHITELIST_CHANGED");
+        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+            public void onReceive(Context context, Intent intent) {
+                // the battery optimization whitelist changed
+                updateAllWidgets();
+            }
+        };
+        this.registerReceiver(broadcastReceiver, intentFilter);
     }
 
 }
