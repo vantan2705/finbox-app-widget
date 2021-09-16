@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutOverviewNN"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -46,6 +47,7 @@
         android:gravity="center">
         <ImageView
             android:id="@+id/imageViewWidgetNN"
+            android:src="@drawable/ic_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>

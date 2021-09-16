@@ -86,16 +86,10 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // FIRE ZE MISSILES!
-                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            Intent intent = new Intent();
-                            String packageName = getPackageName();
-                            PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
-                            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-                                intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-                                intent.setData(Uri.parse("package:" + getPackageName()));
-                                startActivity(intent);
-                            }
-                        }
+                        Intent intent = new Intent();
+                        intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                        intent.setData(Uri.parse("package:" + getPackageName()));
+                        startActivity(intent);
                     }
                 })
                 .setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
@@ -103,7 +97,12 @@ public class MainActivity extends AppCompatActivity {
                         // User cancelled the dialog
                     }
                 });
-        builder.create().show();
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+            if (!pm.isIgnoringBatteryOptimizations(getPackageName())) {
+                builder.create().show();
+            }
+        }
     }
 
     public void updateAllWidgets() {
