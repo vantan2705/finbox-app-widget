@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.PowerManager;
 import android.os.SystemClock;
-import android.util.Log;
 
 /**
  * Implementation of App Widget functionality.
