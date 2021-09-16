@@ -23,7 +23,7 @@ public class OverviewBaseWidget extends AppWidgetProvider {
             final PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, 0);
 
             alarmManager.cancel(pendingIntent);
-            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(),1000, pendingIntent);
+            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(),60000, pendingIntent);
         } else {
             Intent intent = new Intent(context, UpdateOverviewBaseService.class);
             context.startService(intent);
@@ -32,10 +32,7 @@ public class OverviewBaseWidget extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        Log.e("tan", "onUpdate");
         updateAppWidget(context);
-
-        //OverviewBaseWidget.updateAppWidget(context, appWidgetManager, appWidgetIds);
     }
 
     @Override

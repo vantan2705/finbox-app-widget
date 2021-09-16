@@ -16,8 +16,11 @@
         android:theme="@style/Theme.FinboxAppWidget"
         android:usesCleartextTraffic="true">
         <service
-            android:name=".UpdateOverviewBaseService"
+            android:name=".UpdateOverviewNNService"
             android:exported="false"></service>
+        <service
+            android:name=".UpdateOverviewBaseService"
+            android:exported="false" />
 
         <activity
             android:name=".TickerDetailConfigure"

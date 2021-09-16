@@ -1,11 +1,16 @@
 package com.example.finboxappwidget;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.PowerManager;
+import android.os.SystemClock;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -32,72 +37,24 @@ import java.util.HashMap;
  */
 public class OverviewNNWidget extends AppWidgetProvider {
 
-    static String dataUrl = "https://api.finbox.vn/api/app_new/getMarketData/";
+    static void updateAppWidget(Context context) {
+        PowerManager pm = (PowerManager) context.getSystemService(context.POWER_SERVICE);
+        if (pm.isIgnoringBatteryOptimizations(context.getPackageName())) {
+            final AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            final Intent intent = new Intent(context, UpdateOverviewNNService.class);
+            final PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, 0);
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        HashMap data = new HashMap();
-        data.put("day", 0);
-        JSONObject jsonBody = new JSONObject(data);
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.POST, dataUrl, jsonBody, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONObject marketTwoData = response.getJSONObject("marketTwoData");
-                            marketTwoData.keys();
-                            String overviewString = marketTwoData.getString("overview");
-                            JSONObject overviewJSON = new JSONObject(overviewString);
-                            String chartBaseString = overviewJSON.getString("chartNN");
-                            JSONObject chartBaseJSON = new JSONObject(chartBaseString);
-
-                            String buy = chartBaseJSON.getString("buy");
-                            String sell = chartBaseJSON.getString("sell");
-                            String substract = chartBaseJSON.getString("substract");
-                            String note = chartBaseJSON.getString("note");
-
-                            float fBuy, fSell;
-
-                            try {
-                                fBuy = Float.parseFloat(buy);
-                                fSell = Float.parseFloat(sell);
-                            } catch (Exception e) {
-                                fBuy = fSell = 0;
-                            }
-
-                            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.overview_n_n_widget);
-                            views.setTextViewText(R.id.txtWidgetNNNote, note);
-                            views.setTextViewText(R.id.txtWidgetNNBuy, buy);
-                            views.setTextViewText(R.id.txtWidgetNNSell, sell);
-                            views.setTextViewText(R.id.txtWidgetNNSubstract, substract);
-                            views.setImageViewBitmap(R.id.imageViewWidgetNN, chart(context, fBuy, fSell));
-
-                            // Instruct the widget manager to update the widget
-                            for (int appWidgetId : appWidgetIds) {
-                                appWidgetManager.updateAppWidget(appWidgetId, views);
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
-                        //Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
-
-                    }
-                });
-
-        MySingleton.getInstance(context).addToRequestQueue(jsonObjectRequest);
+            alarmManager.cancel(pendingIntent);
+            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(),60000, pendingIntent);
+        } else {
+            Intent intent = new Intent(context, UpdateOverviewNNService.class);
+            context.startService(intent);
+        }
     }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        OverviewNNWidget.updateAppWidget(context, appWidgetManager, appWidgetIds);
+        updateAppWidget(context);
     }
 
     @Override

@@ -6,7 +6,6 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -16,11 +15,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import org.json.JSONException;
@@ -37,11 +35,11 @@ import java.util.HashMap;
  * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  */
-public class UpdateOverviewBaseService extends IntentService {
+public class UpdateOverviewNNService extends IntentService {
     String dataUrl = "https://api.finbox.vn/api/app_new/getMarketData/";
     Context context = this;
 
-    public UpdateOverviewBaseService() {
+    public UpdateOverviewNNService() {
         super("UpdateOverviewBaseService");
     }
 
@@ -65,30 +63,30 @@ public class UpdateOverviewBaseService extends IntentService {
                             marketTwoData.keys();
                             String overviewString = marketTwoData.getString("overview");
                             JSONObject overviewJSON = new JSONObject(overviewString);
-                            String chartBaseString = overviewJSON.getString("chartBase");
+                            String chartBaseString = overviewJSON.getString("chartNN");
                             JSONObject chartBaseJSON = new JSONObject(chartBaseString);
 
-                            String strong = chartBaseJSON.getString("strong");
-                            String weak = chartBaseJSON.getString("weak");
-                            String ratio = chartBaseJSON.getString("ratio");
+                            String buy = chartBaseJSON.getString("buy");
+                            String sell = chartBaseJSON.getString("sell");
+                            String substract = chartBaseJSON.getString("substract");
                             String note = chartBaseJSON.getString("note");
 
-                            float fStrong, fWeak;
+                            float fBuy, fSell;
 
                             try {
-                                fStrong = Float.parseFloat(strong);
-                                fWeak = Float.parseFloat(weak);
+                                fBuy = Float.parseFloat(buy);
+                                fSell = Float.parseFloat(sell);
                             } catch (Exception e) {
-                                fStrong = fWeak = 0;
+                                fBuy = fSell = 0;
                             }
 
-                            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.overview_base_widget);
-                            views.setTextViewText(R.id.txtWidgetBaseNote, note);
-                            views.setTextViewText(R.id.txtWidgetBaseStrong, strong);
-                            views.setTextViewText(R.id.txtWidgetBaseWeak, weak);
-                            views.setTextViewText(R.id.txtWidgetBaseRatio, ratio);
-                            views.setImageViewBitmap(R.id.imageViewWidgetBase, chart(context, fStrong, fWeak));
-                            ComponentName thisWidget = new ComponentName(context,OverviewBaseWidget.class);
+                            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.overview_n_n_widget);
+                            views.setTextViewText(R.id.txtWidgetNNNote, note);
+                            views.setTextViewText(R.id.txtWidgetNNBuy, buy);
+                            views.setTextViewText(R.id.txtWidgetNNSell, sell);
+                            views.setTextViewText(R.id.txtWidgetNNSubstract, substract);
+                            views.setImageViewBitmap(R.id.imageViewWidgetNN, chart(context, fBuy, fSell));
+                            ComponentName thisWidget = new ComponentName(context,OverviewNNWidget.class);
                             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
                             appWidgetManager.updateAppWidget(thisWidget, views);
 
@@ -109,49 +107,32 @@ public class UpdateOverviewBaseService extends IntentService {
         MySingleton.getInstance(context).addToRequestQueue(jsonObjectRequest);
     }
 
-    public Bitmap chart(Context context, float strong, float weak) {
+    public Bitmap chart(Context context, float buy, float sell) {
         int positiveColor = ContextCompat.getColor(context, R.color.widget_overview_positive);
         int negativeColor = ContextCompat.getColor(context, R.color.widget_overview_negative);
-        BarChart chart = new BarChart(context);
-        ArrayList<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0f, strong));
-        entries.add(new BarEntry(6f, weak));
+        PieChart chart = new PieChart(context);
+        ArrayList<PieEntry> entries = new ArrayList<>();
+        entries.add(new PieEntry(buy, "Mua"));
+        entries.add(new PieEntry(Math.abs(sell), "Bán"));
 
-        BarDataSet dataset = new BarDataSet(entries, "");
+        PieDataSet dataset = new PieDataSet(entries, "");
         dataset.setColors(new int[] {positiveColor, negativeColor});
-        dataset.setValueTextSize(45);
+        dataset.setValueTextSize(30);
 
-        ArrayList<String> labels = new ArrayList<String>();
-        labels.add("Strong");
-        labels.add("Weak");
-        BarData data = new BarData(dataset);
-        data.setBarWidth(5f);
+        PieData data = new PieData(dataset);
         data.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                return String.valueOf((int) value);
+                float sum = buy + Math.abs(sell);
+                float percentage = value / sum;
+                return String.format("%.01f", percentage * 100) + "%";
             }
         });
         chart.setData(data);
         chart.getDescription().setEnabled(false);
         chart.getLegend().setEnabled(false);
-        chart.setFitBars(true); // value align center
-        chart.setExtraTopOffset(50); // Top padding to avoid value covered
-
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setEnabled(false);
-        xAxis.setCenterAxisLabels(true); // set label center
-        xAxis.setDrawGridLines(true);
-
-        chart.getAxisLeft().setAxisMinimum(0f); // Đúng tỉ lệ giữa 2 cột
-        chart.getAxisRight().setAxisMinimum(0f); // Đúng tỉ lệ giữa 2 cột
-        chart.getAxisLeft().setTextSize(15f);
-        chart.getAxisLeft().setDrawLabels(false);
-        chart.getAxisRight().setDrawLabels(false);
-        chart.getAxisLeft().setEnabled(false);
-        chart.getAxisRight().setEnabled(false);
-        chart.getAxisLeft().setDrawGridLines(false);
-        chart.getAxisRight().setDrawGridLines(false);
+        chart.setDrawHoleEnabled(false);
+        chart.setDrawSliceText(false);
 
         chart.setDrawingCacheEnabled(true);
         // this is the important code :)

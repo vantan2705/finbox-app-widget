@@ -8,11 +8,16 @@ import android.os.Bundle;
 
 public class OverviewNNWidgetConfigure extends AppCompatActivity {
     private int appWidgetId;
-    private int[] appWidgetIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // initial widget
+        Intent serviceIntent = new Intent(this, UpdateOverviewNNService.class);
+        this.startService(serviceIntent);
+
+        OverviewNNWidget.updateAppWidget(this);
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -21,13 +26,6 @@ public class OverviewNNWidgetConfigure extends AppCompatActivity {
                     AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
         }
-
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-
-//        Custom configuratons
-        appWidgetIds =  new int[]{ appWidgetId };
-        OverviewNNWidget.updateAppWidget(this, appWidgetManager, appWidgetIds);
-
         Intent resultValue = new Intent();
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         setResult(RESULT_OK, resultValue);
