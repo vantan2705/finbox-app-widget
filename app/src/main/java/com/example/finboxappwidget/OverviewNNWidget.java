@@ -15,17 +15,15 @@ import android.os.SystemClock;
 public class OverviewNNWidget extends AppWidgetProvider {
 
     static void updateAppWidget(Context context) {
+        final Intent intent = new Intent(context, UpdateOverviewNNService.class);
+        context.startService(intent);
         PowerManager pm = (PowerManager) context.getSystemService(context.POWER_SERVICE);
         if (pm.isIgnoringBatteryOptimizations(context.getPackageName())) {
             final AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            final Intent intent = new Intent(context, UpdateOverviewNNService.class);
             final PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, 0);
 
             alarmManager.cancel(pendingIntent);
             alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(),60000, pendingIntent);
-        } else {
-            Intent intent = new Intent(context, UpdateOverviewNNService.class);
-            context.startService(intent);
         }
     }
 
