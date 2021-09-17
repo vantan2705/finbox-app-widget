@@ -79,6 +79,7 @@ public class TickerDetailActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        finish();
     }
 
     private void performSearch(String ticker) {
@@ -89,7 +90,9 @@ public class TickerDetailActivity extends AppCompatActivity {
             Intent intent = new Intent (Intent.ACTION_VIEW);
             intent.setData (Uri.parse(TICKER_DETAIL_URL + ticker.toUpperCase()));
             try {
+                autoCompleteTextViewTicker.setText("");
                 startActivity(intent);
+                finish();
             } catch (ActivityNotFoundException anfe) {
                 Toast.makeText(TickerDetailActivity.this, anfe.getMessage(), Toast.LENGTH_SHORT).show();
             }

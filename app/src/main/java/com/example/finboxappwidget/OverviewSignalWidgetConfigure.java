@@ -13,10 +13,6 @@ public class OverviewSignalWidgetConfigure extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // initial widget
-        Intent serviceIntent = new Intent(this, UpdateOverviewSignalService.class);
-        this.startService(serviceIntent);
-
         OverviewSignalWidget.updateAppWidget(this);
 
         Intent intent = getIntent();

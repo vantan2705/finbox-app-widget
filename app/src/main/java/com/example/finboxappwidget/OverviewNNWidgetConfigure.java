@@ -13,10 +13,6 @@ public class OverviewNNWidgetConfigure extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // initial widget
-        Intent serviceIntent = new Intent(this, UpdateOverviewNNService.class);
-        this.startService(serviceIntent);
-
         OverviewNNWidget.updateAppWidget(this);
 
         Intent intent = getIntent();

@@ -12,10 +12,6 @@ public class OverviewBaseWidgetConfigure extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // initial widget
-        Intent serviceIntent = new Intent(this, UpdateOverviewBaseService.class);
-        this.startService(serviceIntent);
-
         OverviewBaseWidget.updateAppWidget(this);
 
         Intent intent = getIntent();

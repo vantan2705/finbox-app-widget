@@ -13,10 +13,6 @@ public class OverviewTrendWidgetConfigure extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // initial widget
-        Intent serviceIntent = new Intent(this, UpdateOverviewTrendService.class);
-        this.startService(serviceIntent);
-
         OverviewTrendWidget.updateAppWidget(this);
 
         Intent intent = getIntent();
