@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -112,10 +113,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateAllWidgets() {
-        OverviewBaseWidget.updateAppWidget(context);
-        OverviewNNWidget.updateAppWidget(context);
-        OverviewTrendWidget.updateAppWidget(context);
-        OverviewSignalWidget.updateAppWidget(context);
+        boolean overviewBaseStatus, overviewNNStatus, overviewTrendStatus, overviewSignalStatus;
+        boolean defaultStatus = false;
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        overviewBaseStatus = sharedPref.getBoolean(getString(R.string.preference_widget_overview_base_key), defaultStatus);
+        overviewNNStatus = sharedPref.getBoolean(getString(R.string.preference_widget_overview_nn_key), defaultStatus);
+        overviewSignalStatus = sharedPref.getBoolean(getString(R.string.preference_widget_overview_signal_key), defaultStatus);
+        overviewTrendStatus = sharedPref.getBoolean(getString(R.string.preference_widget_overview_trend_key), defaultStatus);
+
+        if (overviewBaseStatus) {
+            OverviewBaseWidget.updateAppWidget(context);
+        }
+
+        if (overviewNNStatus) {
+            OverviewNNWidget.updateAppWidget(context);
+        }
+
+        if (overviewSignalStatus) {
+            OverviewTrendWidget.updateAppWidget(context);
+        }
+
+        if (overviewTrendStatus) {
+            OverviewSignalWidget.updateAppWidget(context);
+        }
     }
 
     public void setPowerWhiteListReceiver() {

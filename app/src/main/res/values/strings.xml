@@ -3,4 +3,10 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="app_widget_description">This is an app widget description</string>
+
+    <string name="preference_widget_status">finbox_widget_status</string>
+    <string name="preference_widget_overview_base_key">finbox_overview_base</string>
+    <string name="preference_widget_overview_nn_key">finbox_overview_nn</string>
+    <string name="preference_widget_overview_signal_key">finbox_overview_signal</string>
+    <string name="preference_widget_overview_trend_key">finbox_overview_trend</string>
 </resources>
