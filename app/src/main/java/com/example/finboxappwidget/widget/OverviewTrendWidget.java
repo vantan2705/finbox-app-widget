@@ -17,16 +17,14 @@ import com.example.finboxappwidget.service.UpdateOverviewTrendService;
  * Implementation of App Widget functionality.
  */
 public class OverviewTrendWidget extends AppWidgetProvider {
-    private static AlarmManager alarmManager;
-    private static PendingIntent updateServiceIntent;
 
     public static void updateAppWidget(Context context) {
-        final Intent intent = new Intent(context, UpdateOverviewTrendService.class);
+        Intent intent = new Intent(context, UpdateOverviewTrendService.class);
         context.startService(intent);
         PowerManager pm = (PowerManager) context.getSystemService(context.POWER_SERVICE);
         if (pm.isIgnoringBatteryOptimizations(context.getPackageName())) {
-            alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            updateServiceIntent = updateServiceIntent.getService(context, 0, intent, 0);
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            PendingIntent updateServiceIntent = PendingIntent.getService(context, 0, intent, 0);
             alarmManager.cancel(updateServiceIntent);
             alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(),60000, updateServiceIntent);
         }
@@ -46,15 +44,18 @@ public class OverviewTrendWidget extends AppWidgetProvider {
     @Override
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
-        savePreferenceWidgetStatus(context, true);
+        Intent intent = new Intent(context, UpdateOverviewTrendService.class);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        PendingIntent updateServiceIntent = PendingIntent.getService(context, 0, intent, 0);
         alarmManager.cancel(updateServiceIntent);
+        savePreferenceWidgetStatus(context, true);
     }
 
     public void savePreferenceWidgetStatus(Context context, boolean status) {
         SharedPreferences sharedPref =
                 context.getSharedPreferences(context.getString(R.string.preference_widget_status), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean(context.getString(R.string.preference_widget_overview_base_key), status);
+        editor.putBoolean(context.getString(R.string.preference_widget_overview_trend_key), status);
         editor.apply();
     }
 

@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
     public void updateAllWidgets() {
         boolean overviewBaseStatus, overviewNNStatus, overviewTrendStatus, overviewSignalStatus;
         boolean defaultStatus = false;
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.preference_widget_status), Context.MODE_PRIVATE);
         overviewBaseStatus = sharedPref.getBoolean(getString(R.string.preference_widget_overview_base_key), defaultStatus);
         overviewNNStatus = sharedPref.getBoolean(getString(R.string.preference_widget_overview_nn_key), defaultStatus);
         overviewSignalStatus = sharedPref.getBoolean(getString(R.string.preference_widget_overview_signal_key), defaultStatus);

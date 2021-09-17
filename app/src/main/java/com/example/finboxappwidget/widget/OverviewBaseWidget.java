@@ -17,15 +17,13 @@ import com.example.finboxappwidget.service.UpdateOverviewBaseService;
  * Implementation of App Widget functionality.
  */
 public class OverviewBaseWidget extends AppWidgetProvider {
-    private static AlarmManager alarmManager;
-    private static PendingIntent updateServiceIntent;
     public static void updateAppWidget(Context context) {
-        final Intent intent = new Intent(context, UpdateOverviewBaseService.class);
+        Intent intent = new Intent(context, UpdateOverviewBaseService.class);
         PowerManager pm = (PowerManager) context.getSystemService(context.POWER_SERVICE);
         context.startService(intent);
         if (pm.isIgnoringBatteryOptimizations(context.getPackageName())) {
-            alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            updateServiceIntent = updateServiceIntent.getService(context, 0, intent, 0);
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            PendingIntent updateServiceIntent = PendingIntent.getService(context, 0, intent, 0);
             alarmManager.cancel(updateServiceIntent);
             alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(),60000, updateServiceIntent);
         }
@@ -45,6 +43,9 @@ public class OverviewBaseWidget extends AppWidgetProvider {
     @Override
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
+        Intent intent = new Intent(context, UpdateOverviewBaseService.class);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        PendingIntent updateServiceIntent = PendingIntent.getService(context, 0, intent, 0);
         alarmManager.cancel(updateServiceIntent);
         savePreferenceWidgetStatus(context, false);
     }
