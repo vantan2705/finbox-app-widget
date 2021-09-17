@@ -1,4 +1,4 @@
-package com.example.finboxappwidget;
+package com.example.finboxappwidget.widget;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -9,18 +9,21 @@ import android.content.Intent;
 import android.os.PowerManager;
 import android.os.SystemClock;
 
+import com.example.finboxappwidget.service.UpdateOverviewNNService;
+
 /**
  * Implementation of App Widget functionality.
  */
-public class OverviewSignalWidget extends AppWidgetProvider {
+public class OverviewNNWidget extends AppWidgetProvider {
 
-    static void updateAppWidget(Context context) {
-        final Intent intent = new Intent(context, UpdateOverviewSignalService.class);
+    public static void updateAppWidget(Context context) {
+        final Intent intent = new Intent(context, UpdateOverviewNNService.class);
         context.startService(intent);
         PowerManager pm = (PowerManager) context.getSystemService(context.POWER_SERVICE);
-        final AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (pm.isIgnoringBatteryOptimizations(context.getPackageName())) {
+            final AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             final PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, 0);
+
             alarmManager.cancel(pendingIntent);
             alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(),60000, pendingIntent);
         }

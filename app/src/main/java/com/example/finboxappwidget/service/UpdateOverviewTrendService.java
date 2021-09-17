@@ -1,4 +1,4 @@
-package com.example.finboxappwidget;
+package com.example.finboxappwidget.service;
 
 import android.app.IntentService;
 import android.appwidget.AppWidgetManager;
@@ -15,6 +15,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.finboxappwidget.MySingleton;
+import com.example.finboxappwidget.widget.OverviewTrendWidget;
+import com.example.finboxappwidget.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -92,7 +95,7 @@ public class UpdateOverviewTrendService extends IntentService {
                             views.setTextViewText(R.id.txtWidgetTrendNormal, normal);
                             views.setTextViewText(R.id.txtWidgetTrendDecrease, decrease);
                             views.setImageViewBitmap(R.id.imageViewWidgetTrend, chart(context, fIncrease, fNormal, fDecrease));
-                            ComponentName thisWidget = new ComponentName(context,OverviewTrendWidget.class);
+                            ComponentName thisWidget = new ComponentName(context, OverviewTrendWidget.class);
                             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
                             appWidgetManager.updateAppWidget(thisWidget, views);
 

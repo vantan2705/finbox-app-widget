@@ -1,4 +1,4 @@
-package com.example.finboxappwidget;
+package com.example.finboxappwidget.service;
 
 import android.app.IntentService;
 import android.appwidget.AppWidgetManager;
@@ -15,6 +15,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.finboxappwidget.MySingleton;
+import com.example.finboxappwidget.widget.OverviewSignalWidget;
+import com.example.finboxappwidget.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -87,7 +90,7 @@ public class UpdateOverviewSignalService extends IntentService {
                             views.setTextViewText(R.id.txtWidgetSignalSell, sell);
                             views.setTextViewText(R.id.txtWidgetSignalRatio, ratio);
                             views.setImageViewBitmap(R.id.imageViewWidgetSignal, chart(context, fBuy, fSell));
-                            ComponentName thisWidget = new ComponentName(context,OverviewSignalWidget.class);
+                            ComponentName thisWidget = new ComponentName(context, OverviewSignalWidget.class);
                             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
                             appWidgetManager.updateAppWidget(thisWidget, views);
 

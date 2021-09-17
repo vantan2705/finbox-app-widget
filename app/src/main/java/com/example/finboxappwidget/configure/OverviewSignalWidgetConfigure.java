@@ -1,4 +1,4 @@
-package com.example.finboxappwidget;
+package com.example.finboxappwidget.configure;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,14 +6,16 @@ import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class OverviewTrendWidgetConfigure extends AppCompatActivity {
+import com.example.finboxappwidget.widget.OverviewSignalWidget;
+
+public class OverviewSignalWidgetConfigure extends AppCompatActivity {
     private int appWidgetId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        OverviewTrendWidget.updateAppWidget(this);
+        OverviewSignalWidget.updateAppWidget(this);
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();

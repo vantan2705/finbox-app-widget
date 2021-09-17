@@ -1,4 +1,4 @@
-package com.example.finboxappwidget;
+package com.example.finboxappwidget.service;
 
 import android.app.IntentService;
 import android.appwidget.AppWidgetManager;
@@ -15,6 +15,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.finboxappwidget.MySingleton;
+import com.example.finboxappwidget.widget.OverviewNNWidget;
+import com.example.finboxappwidget.R;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -86,7 +89,7 @@ public class UpdateOverviewNNService extends IntentService {
                             views.setTextViewText(R.id.txtWidgetNNSell, sell);
                             views.setTextViewText(R.id.txtWidgetNNSubstract, substract);
                             views.setImageViewBitmap(R.id.imageViewWidgetNN, chart(context, fBuy, fSell));
-                            ComponentName thisWidget = new ComponentName(context,OverviewNNWidget.class);
+                            ComponentName thisWidget = new ComponentName(context, OverviewNNWidget.class);
                             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
                             appWidgetManager.updateAppWidget(thisWidget, views);
 

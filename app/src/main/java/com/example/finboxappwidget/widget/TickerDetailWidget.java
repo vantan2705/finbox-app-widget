@@ -1,4 +1,4 @@
-package com.example.finboxappwidget;
+package com.example.finboxappwidget.widget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -7,12 +7,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
+import com.example.finboxappwidget.R;
+import com.example.finboxappwidget.TickerDetailActivity;
+
 /**
  * Implementation of App Widget functionality.
  */
 public class TickerDetailWidget extends AppWidgetProvider {
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
+    public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int[] appWidgetIds) {
 
         // Construct the RemoteViews object

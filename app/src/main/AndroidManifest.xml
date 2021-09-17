@@ -16,32 +16,32 @@
         android:theme="@style/Theme.FinboxAppWidget"
         android:usesCleartextTraffic="true">
         <service
-            android:name=".UpdateOverviewTrendService"
+            android:name=".service.UpdateOverviewTrendService"
             android:exported="false"></service>
         <service
-            android:name=".UpdateOverviewSignalService"
+            android:name=".service.UpdateOverviewSignalService"
             android:exported="false" />
         <service
-            android:name=".UpdateOverviewNNService"
+            android:name=".service.UpdateOverviewNNService"
             android:exported="false" />
         <service
-            android:name=".UpdateOverviewBaseService"
+            android:name=".service.UpdateOverviewBaseService"
             android:exported="false" />
 
         <activity
-            android:name=".TickerDetailConfigure"
+            android:name=".configure.TickerDetailConfigure"
             android:exported="true" />
         <activity
-            android:name=".OverviewTrendWidgetConfigure"
+            android:name=".configure.OverviewTrendWidgetConfigure"
             android:exported="true" />
         <activity
-            android:name=".OverviewSignalWidgetConfigure"
+            android:name=".configure.OverviewSignalWidgetConfigure"
             android:exported="true" />
         <activity
-            android:name=".OverviewNNWidgetConfigure"
+            android:name=".configure.OverviewNNWidgetConfigure"
             android:exported="true" />
         <activity
-            android:name=".OverviewBaseWidgetConfigure"
+            android:name=".configure.OverviewBaseWidgetConfigure"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
@@ -49,7 +49,7 @@
         </activity>
 
         <receiver
-            android:name=".OverviewNNWidget"
+            android:name=".widget.OverviewNNWidget"
             android:exported="true"
             android:label="Biểu đồ nước ngoài">
             <intent-filter>
@@ -61,7 +61,7 @@
                 android:resource="@xml/overview_n_n_widget_info" />
         </receiver>
         <receiver
-            android:name=".OverviewSignalWidget"
+            android:name=".widget.OverviewSignalWidget"
             android:exported="true"
             android:label="Biểu đồ tín hiệu">
             <intent-filter>
@@ -73,7 +73,7 @@
                 android:resource="@xml/overview_signal_widget_info" />
         </receiver>
         <receiver
-            android:name=".OverviewTrendWidget"
+            android:name=".widget.OverviewTrendWidget"
             android:exported="true"
             android:label="Biểu đồ xu hướng">
             <intent-filter>
@@ -91,7 +91,7 @@
             android:windowSoftInputMode="stateVisible" />
 
         <receiver
-            android:name=".TickerDetailWidget"
+            android:name=".widget.TickerDetailWidget"
             android:exported="true"
             android:label="Tìm kiếm mã">
             <intent-filter>
@@ -103,7 +103,7 @@
                 android:resource="@xml/ticker_detail_widget_info" />
         </receiver>
         <receiver
-            android:name=".OverviewBaseWidget"
+            android:name=".widget.OverviewBaseWidget"
             android:exported="true"
             android:label="Biểu đồ nền tảng">
             <intent-filter>

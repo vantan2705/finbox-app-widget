@@ -1,4 +1,4 @@
-package com.example.finboxappwidget;
+package com.example.finboxappwidget.widget;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -9,15 +9,17 @@ import android.content.Intent;
 import android.os.PowerManager;
 import android.os.SystemClock;
 
+import com.example.finboxappwidget.service.UpdateOverviewBaseService;
+
 /**
  * Implementation of App Widget functionality.
  */
-public class OverviewTrendWidget extends AppWidgetProvider {
+public class OverviewBaseWidget extends AppWidgetProvider {
 
-    static void updateAppWidget(Context context) {
-        final Intent intent = new Intent(context, UpdateOverviewTrendService.class);
-        context.startService(intent);
+    public static void updateAppWidget(Context context) {
+        final Intent intent = new Intent(context, UpdateOverviewBaseService.class);
         PowerManager pm = (PowerManager) context.getSystemService(context.POWER_SERVICE);
+        context.startService(intent);
         if (pm.isIgnoringBatteryOptimizations(context.getPackageName())) {
             final AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             final PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, 0);

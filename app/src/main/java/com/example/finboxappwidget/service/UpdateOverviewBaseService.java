@@ -1,4 +1,4 @@
-package com.example.finboxappwidget;
+package com.example.finboxappwidget.service;
 
 import android.app.IntentService;
 import android.appwidget.AppWidgetManager;
@@ -6,7 +6,6 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -16,6 +15,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.finboxappwidget.MySingleton;
+import com.example.finboxappwidget.widget.OverviewBaseWidget;
+import com.example.finboxappwidget.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -88,7 +90,7 @@ public class UpdateOverviewBaseService extends IntentService {
                             views.setTextViewText(R.id.txtWidgetBaseWeak, weak);
                             views.setTextViewText(R.id.txtWidgetBaseRatio, ratio);
                             views.setImageViewBitmap(R.id.imageViewWidgetBase, chart(context, fStrong, fWeak));
-                            ComponentName thisWidget = new ComponentName(context,OverviewBaseWidget.class);
+                            ComponentName thisWidget = new ComponentName(context, OverviewBaseWidget.class);
                             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
                             appWidgetManager.updateAppWidget(thisWidget, views);
 

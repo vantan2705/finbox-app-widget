@@ -16,6 +16,12 @@ import android.os.PowerManager;
 import android.provider.Settings;
 import android.widget.ListView;
 
+import com.example.finboxappwidget.widget.OverviewBaseWidget;
+import com.example.finboxappwidget.widget.OverviewNNWidget;
+import com.example.finboxappwidget.widget.OverviewSignalWidget;
+import com.example.finboxappwidget.widget.OverviewTrendWidget;
+import com.example.finboxappwidget.widget.TickerDetailWidget;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {

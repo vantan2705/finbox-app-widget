@@ -1,4 +1,4 @@
-package com.example.finboxappwidget;
+package com.example.finboxappwidget.configure;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,13 +6,15 @@ import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class TickerDetailConfigure extends AppCompatActivity {
-    private int appWidgetId;
-    private int[] appWidgetIds;
+import com.example.finboxappwidget.widget.OverviewBaseWidget;
 
+public class OverviewBaseWidgetConfigure extends AppCompatActivity {
+    private int appWidgetId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        OverviewBaseWidget.updateAppWidget(this);
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -21,13 +23,6 @@ public class TickerDetailConfigure extends AppCompatActivity {
                     AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
         }
-
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-
-//        Custom configuratons
-        appWidgetIds =  new int[]{ appWidgetId };
-        TickerDetailWidget.updateAppWidget(this, appWidgetManager, appWidgetIds);
-
         Intent resultValue = new Intent();
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         setResult(RESULT_OK, resultValue);
